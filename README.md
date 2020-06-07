@@ -12,4 +12,4 @@
 -[]
 
 
-Copyright (c) 2018 **_Mike Albers & Justin Kerntz_**
+Copyright (c) 2020 **_Mike Albers & Justin Kerntz_**
