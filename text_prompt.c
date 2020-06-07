@@ -2,6 +2,7 @@
 #include "helper_functions.c"
 
 UBYTE keydown;
+struct Cursor cursor; 
 const UINT8 MIN_CURSOR_X = 0;
 const UINT8 MIN_CURSOR_Y = 0;
 const UINT8 MAX_CURSOR_X = 0;
