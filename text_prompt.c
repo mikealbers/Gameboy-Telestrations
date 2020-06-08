@@ -8,14 +8,15 @@
 UBYTE keydown;
 UBYTE phraseEntered;
 struct Cursor cursor;
+struct Cursor spaceShortcut;
 const UINT8 MIN_CURSOR_X = 40;
 const UINT8 MIN_CURSOR_Y = 88;
 const UINT8 MAX_CURSOR_X = 136;
 const UINT8 MAX_CURSOR_Y = 136;
 UINT8 phraseCharacterIndex;
-UINT8 phraseLineOne[13];
-UINT8 phraseLineTwo[13];
-UINT8 phraseLineThree[13];
+UINT8 phraseLineOne[13] = { 48,48,48,48,48,48,48,48,48,48,48,48,48 };
+UINT8 phraseLineTwo[13] = { 48,48,48,48,48,48,48,48,48,48,48,48,48 };
+UINT8 phraseLineThree[13] = { 48,48,48,48,48,48,48,48,48,48,48,48,48 };
 
 UBYTE isWithinKeyboard(UINT8 x, UINT8 y){
   return x >= MIN_CURSOR_X && x <= MAX_CURSOR_X && y >= MIN_CURSOR_Y && y <= MAX_CURSOR_Y;
@@ -48,30 +49,27 @@ void removeFromPhrase(){
     
     if(phraseCharacterIndex <= 13){
       phraseCharacterIndex--;
-      phraseLineOne[phraseCharacterIndex] = 0;
+      phraseLineOne[phraseCharacterIndex] = 48;
       set_bkg_tiles(3, 3, 13, 1, phraseLineOne);
     }
     else if (phraseCharacterIndex >= 14 && phraseCharacterIndex < 27){
       phraseCharacterIndex--;
-      phraseLineTwo[phraseCharacterIndex - 13] = 0;
+      phraseLineTwo[phraseCharacterIndex - 13] = 48;
       set_bkg_tiles(3, 4, 13, 1, phraseLineTwo);
     }
     else {
       phraseCharacterIndex--;
-      phraseLineThree[phraseCharacterIndex - 26] = 0;
+      phraseLineThree[phraseCharacterIndex - 26] = 48;
       set_bkg_tiles(3, 5, 13, 1, phraseLineThree);  
     }
   }
 }
 
-
 void updatePhrase(struct Cursor* cursor){
   if(cursor->column==6 && cursor->row==3){
-    // delete
     removeFromPhrase();
   }
   else {
-    // add to phrase
     addToPhrase(cursor);
   }
 }
@@ -83,11 +81,19 @@ void textEntry() {
   cursor.column = 0;
   cursor.row = 0;
 
-  set_sprite_data(0, 48, sprite_text);
+  spaceShortcut.column = 5;
+  spaceShortcut.row = 3;
+  spaceShortcut.x = 120;
+  spaceShortcut.y = 136;
+
+  set_sprite_data(0, 49, sprite_text);
   set_sprite_tile(0, 44);
   move_sprite(0, cursor.x, cursor.y);
-  set_bkg_data(0, 48, sprite_text);
+  set_bkg_data(0, 49, sprite_text);
   set_bkg_tiles(0, 0, 20, 18, map_text_editor);
+  set_bkg_tiles(3, 3, 13, 1, phraseLineOne);
+  set_bkg_tiles(3, 4, 13, 1, phraseLineTwo);
+  set_bkg_tiles(3, 5, 13, 1, phraseLineThree);
   
   SHOW_BKG;
   SHOW_SPRITES;
@@ -139,8 +145,11 @@ void textEntry() {
         break;
       case J_B:
         removeFromPhrase();
-        //drawPhrase();
         keydown = 1;
+        break;
+      case J_SELECT:
+        updatePhrase(&spaceShortcut);
+        keydown = 1;  
         break;
       case J_START:
         HIDE_SPRITES;

@@ -15,10 +15,10 @@ A pass and play game similar to the party drawing game Telestrations.
     - ❌ Save
     - ❌ Change brush size
 - ❌ Text Editor
-    - ❌ Display keyboard
-    - ❌ Cursor movement
-    - ❌ Enter text
-    - ❌ Delete text
+    - ✔️ Display keyboard
+    - ✔️ Cursor movement
+    - ✔️ Enter text
+    - ✔️ Delete text
     - ❌ Save
 - ❌ Art Assets
     - ❌ Keyboard
