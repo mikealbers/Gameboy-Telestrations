@@ -1,8 +1,9 @@
 #include <gb/gb.h>
-#include "helper_functions.c"
 #include "struct_cursor.c"
 #include "map_text_editor.c"
 #include "sprite_text.c"
+#include "struct_game_state.c"
+
 
 
 UBYTE keydown;
@@ -17,6 +18,13 @@ UINT8 phraseCharacterIndex;
 UINT8 phraseLineOne[13] = { 48,48,48,48,48,48,48,48,48,48,48,48,48 };
 UINT8 phraseLineTwo[13] = { 48,48,48,48,48,48,48,48,48,48,48,48,48 };
 UINT8 phraseLineThree[13] = { 48,48,48,48,48,48,48,48,48,48,48,48,48 };
+
+void performantDelayText(UINT8 numloops){
+  UINT8 ii;
+  for(ii = 0; ii < numloops; ii++){
+    wait_vbl_done();
+  }
+}
 
 UBYTE isWithinKeyboard(UINT8 x, UINT8 y){
   return x >= MIN_CURSOR_X && x <= MAX_CURSOR_X && y >= MIN_CURSOR_Y && y <= MAX_CURSOR_Y;
@@ -74,7 +82,7 @@ void updatePhrase(struct Cursor* cursor){
   }
 }
 
-void textEntry() {
+UINT8 textEntry(UINT8 gameMode) {
 
   cursor.x = 40;
   cursor.y = 88;
@@ -152,10 +160,11 @@ void textEntry() {
         keydown = 1;  
         break;
       case J_START:
-        HIDE_SPRITES;
         HIDE_BKG;
+        HIDE_SPRITES;
         phraseEntered = 1;
     }
-    performantDelay(2);
+    performantDelayText(2);
   }
+  return gameMode = 1;
 }
